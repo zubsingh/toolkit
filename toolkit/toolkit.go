@@ -170,14 +170,22 @@ func (t *Tools) CreateDirIfNotExist(path string) error {
 
 // Slugify is a (very) simple means of creating a slug from a string
 func (t *Tools) Slugify(s string) (string, error) {
+	// Check if the input string is empty
 	if s == "" {
 		return "", errors.New("empty string not permitted")
 	}
 
+	// Define a regular expression pattern to match characters not in [a-z\d]
 	var re = regexp.MustCompile(`[^a-z\d]+`)
+
+	// Convert the string to lowercase, replace non-matching characters with "-", and trim leading/trailing "-"
 	slug := strings.Trim(re.ReplaceAllString(strings.ToLower(s), "-"), "-")
+
+	// Check if the resulting slug is zero length
 	if len(slug) == 0 {
 		return "", errors.New("after removing characters, slug is zero length")
 	}
+
+	// Return the slug and no error
 	return slug, nil
 }
